@@ -1,0 +1,38 @@
+.card {
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+  padding: 1rem;
+  background-color: rgb(31, 31, 31);
+  margin: 2rem auto;
+  width: 50rem;
+  max-width: 95%;
+  color: white;
+}
+
+.card button {
+  font: inherit;
+  cursor: pointer;
+  padding: 1rem 2rem;
+  border: 2px solid #09005d;
+  background-color: #004f5d;
+  color: white;
+  border-radius: 12px;
+  margin-right: 1rem;
+}
+
+.card button:hover,
+.card button:active {
+  background-color: #110674;
+  border-color: #065e74;
+}
+
+.card button.alternative {
+  color: #220131;
+  border-color: transparent;
+  background-color: transparent;
+}
+
+.card button.alternative:hover,
+.card button.alternative:active {
+  background-color: #b3d3f8;
+}

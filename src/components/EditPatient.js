@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-
+import Card from "./Card";
 import PatientForm from "./PatientForm";
 import "./EditPatient.css";
 import "./PatientForm.css";
@@ -23,22 +23,24 @@ const EditPatient = (props) => {
 
   if (formCancelValue) {
     return (
-      <form>
-        <div className="edit-patient">
-          <button type="button" onClick={setFormHandler}>
-            Edit Patient Data
-          </button>
-        </div>
-      </form>
+      <Card>
+        <form>
+          <div className="edit-patient">
+            <button type="button" onClick={setFormHandler}>
+              Edit Patient Data
+            </button>
+          </div>
+        </form>
+      </Card>
     );
   }
   return (
-    <div className="edit-patient">
+    <Card className="edit-patient">
       <PatientForm
         onEditPatientData={EditPatientHandler}
         onCancelForm={resetFormHandler}
       />
-    </div>
+    </Card>
   );
 };
 
