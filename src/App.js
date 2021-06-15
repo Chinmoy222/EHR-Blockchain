@@ -3,7 +3,7 @@ import './App.css';
 import {BrowserRouter, Route} from 'react-router-dom';
 import  Navigation from './components/Navigation'; 
 import EditPatient from "./components/EditPatient"; 
-import AddMedical from "./components/AddMedical"; 
+import AddMedical from "./components/AddMedical";
 
 function App() {
   return (

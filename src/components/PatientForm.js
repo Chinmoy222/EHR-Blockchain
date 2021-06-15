@@ -90,7 +90,10 @@ const PatientForm = (props) => {
           </div>
           <div className="edit-patient__control">
             <label>Date of Birth</label>
-            <input type="date" value={enteredDOB} onChange={DOBChangeHandler} />
+            <input type="date" 
+            
+            value={enteredDOB} 
+            onChange={DOBChangeHandler} />
           </div>
           <div className="edit-patient__control">
             <label>Email</label>
