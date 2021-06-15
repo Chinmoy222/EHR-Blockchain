@@ -133,18 +133,22 @@ contract EHR {
     
     //TODO Cheaper Alternative to checking required
     function checkAllowed() public view returns(bool){
-        for(uint i = 0; i < allowedDoctors.length; i++){
-            if(allowedDoctors[i] == msg.sender){
-                return(true);
+        if(allowedDoctors.length > 0){
+            for(uint i = 0; i < allowedDoctors.length; i++){
+                if(allowedDoctors[i] == msg.sender){
+                    return(true);
+                }
             }
         }
         return (msg.sender == owner);
     }
     
     function checkMedDetails() public view returns(bool){
-        for(uint i = 0; i < allowedDoctors.length; i++){
-            if(allowedDoctors[i] == msg.sender){
-                return(true);
+        if(allowedDoctors.length > 0){
+            for(uint i = 0; i < allowedDoctors.length; i++){
+                if(allowedDoctors[i] == msg.sender){
+                    return(true);
+                }
             }
         }
         return (false);
