@@ -667,4 +667,4 @@ const abi = [
   },
 ];
 
-export default new web3.eth.Contract(abi, address);
+export default abi; //new web3.eth.Contract(abi, address);

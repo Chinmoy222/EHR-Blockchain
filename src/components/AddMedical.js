@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import Card from "./Card";
 import DoctorForm from "./DoctorForm";
-import storehash from "../storehash";
+import abi from "../storehash";
 import web3 from "../web3";
 import "./AddMedical.css";
 import "./DoctorForm.css";
 const AddMedical = (props) => {
+  const storehash = new web3.eth.Contract(abi, props.address);
   const [getMH, setGetMH] = useState([]);
   const [getDiagnosis, setGetDiagnosis] = useState([]);
   const [messageValue, setMessageValue] = useState("");

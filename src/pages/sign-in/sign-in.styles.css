@@ -1,0 +1,17 @@
+.login,
+.image {
+  min-height: 100vh;
+}
+
+.heading {
+  font-size: 25px;
+  display: inline-block;
+  margin-bottom: 20px;
+  border-bottom: 5px solid #007bff;
+}
+
+.bg-image {
+  background-image: url("./bg.jpg");
+  background-size: cover;
+  background-position: center center;
+}
