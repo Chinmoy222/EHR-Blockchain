@@ -1,5 +1,5 @@
 import web3 from "./web3";
-const address = "0xc3a4858a08E5d107D85723fc7728eE9C4EdF8cB3"; //Contract Address
+const address = "0x0F658b1A03be1B2Fb42Fda68B0D150CbB7709599"; //Contract Address
 
 const abi = [
   {
@@ -47,6 +47,25 @@ const abi = [
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "i",
+        type: "uint256",
+      },
+    ],
+    name: "getAppointment",
+    outputs: [
+      {
+        name: "",
+        type: "string",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -508,6 +527,20 @@ const abi = [
   {
     constant: true,
     inputs: [],
+    name: "getAppointmentLen",
+    outputs: [
+      {
+        name: "",
+        type: "uint256",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [],
     name: "getDistrict",
     outputs: [
       {
@@ -667,4 +700,4 @@ const abi = [
   },
 ];
 
-export default new web3.eth.Contract(abi, address);
+export default abi; //new web3.eth.Contract(abi, address);

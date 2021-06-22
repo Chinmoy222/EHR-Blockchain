@@ -262,7 +262,13 @@ contract EHR {
         removeAppointmentsAtIndex(loc);
     }
     
+    function getAppointmentLen() public view allowedDoctorsRestricted returns(uint){
+        return appointments.length;
+    }
     
+    function getAppointment(uint i) public view allowedDoctorsRestricted returns(string memory){
+        return appointments[i];
+    }
     
     
     

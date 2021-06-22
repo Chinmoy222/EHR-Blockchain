@@ -1,77 +1,59 @@
 import React, { useState } from "react";
 import Card from "./Card";
-import DoctorForm from "./DoctorForm";
+import AppointmentForm from "./AppointmentForm";
 import abi from "../storehash";
 import web3 from "../web3";
-import "./AddMedical.css";
-import "./DoctorForm.css";
-const AddMedical = (props) => {
+import "./AddAppointment.css";
+import "./AppointmentForm.css";
+const AddAppointment = (props) => {
   const storehash = new web3.eth.Contract(abi, props.address);
-  const [getMH, setGetMH] = useState([]);
-  const [getDiagnosis, setGetDiagnosis] = useState([]);
+  const [getAppointment, setGetAppointment] = useState([]);
   const [messageValue, setMessageValue] = useState("");
-  const AddMedicalHandler = async (enteredMedicalData) => {
-    const medicalData = {
-      ...enteredMedicalData,
+  const AddAppointmentHandler = async (enteredAppointmentData) => {
+    const appointmentData = {
+      ...enteredAppointmentData,
     };
-    // props.onAddMedical(medicalData);
-    console.log(medicalData);
+    // props.onAddAppointment(appointmentData);
+    console.log(appointmentData);
     setMessageValue("Transaction is being processed...");
     const accounts = await web3.eth.getAccounts();
 
-    if (medicalData.mh) {
-      await storehash.methods.addMedicalHistory(medicalData.mh).send({
-        from: accounts[0],
-      });
+    if (appointmentData.doctor && appointmentData.date) {
+      const month = appointmentData.date.toLocaleString("en-US", { month: "long" });
+      const day = appointmentData.date.toLocaleString("en-US", { day: "2-digit" });
+      const year = appointmentData.date.getFullYear();
+      appointmentData.date = day + "-" + month + "-" + year;
+      await storehash.methods
+        .createAppointment(appointmentData.doctor, appointmentData.date)
+        .send({
+          from: accounts[0],
+        });
     }
-
-    if (medicalData.diagnosis) {
-      await storehash.methods.addDiagnosis(medicalData.diagnosis).send({
-        from: accounts[0],
-      });
-    }
-
     setMessageValue("Transaction Success");
 
     setMessageValue("Data Retrieving...");
-    GetMedicalHandler();
+    GetAppointmentHandler();
     setMessageValue("Retrieval Success");
   };
 
-  const GetMedicalHandler = async () => {
+  const GetAppointmentHandler = async () => {
     setMessageValue("Retrieving Data...");
-    setGetMH([]);
-    setGetDiagnosis([]);
+    setGetAppointment([]);
     const accounts = await web3.eth.getAccounts();
-    const getDiagnosisLen = await storehash.methods.getDiagnosisLen().call({
-      from: accounts[0],
-    });
-    const getMedicalHistoryLen = await storehash.methods
-      .getMedicalHistoryLen()
+    const getAppointmentLen = await storehash.methods
+      .getAppointmentLen()
       .call({
         from: accounts[0],
       });
 
     var i;
-    for (i = 0; i < parseInt(getMedicalHistoryLen); i++) {
-      const item = await storehash.methods.getMedicalHistory(i).call({
-          from: accounts[0],
-        });
-      setGetMH((getMH) => [
-        ...getMH,
-        item
-      ]);
+    for (i = 0; i < parseInt(getAppointmentLen); i++) {
+      const item = await storehash.methods.getAppointment(i).call({
+        from: accounts[0],
+      });
+      setGetAppointment((getAppointment) => [...getAppointment, item]);
     } 
-    for (i = 0; i < parseInt(getDiagnosisLen); i++) {
-      const item = await storehash.methods.getDiagnosis(i).call({
-          from: accounts[0],
-        });
-      setGetDiagnosis((getDiagnosis) => [
-        ...getDiagnosis,
-        item
-      ]);
-    }
-    console.log(getMH, getDiagnosis)
+    console.log(getAppointment)
     setMessageValue("Data Retrieved");
   };
 
@@ -91,7 +73,8 @@ const AddMedical = (props) => {
 
   const setViewHandler = () => {
     setViewCancelValue(false);
-    GetMedicalHandler();
+    GetAppointmentHandler();
+    console.log(props.address);
   };
   if (formCancelValue & viewCancelValue) {
     return (
@@ -100,7 +83,7 @@ const AddMedical = (props) => {
           <form>
             <div className="edit-medical">
               <button type="button" onClick={setFormHandler}>
-                Add Medical Data
+                Add Appointment Data
               </button>
             </div>
           </form>
@@ -109,7 +92,7 @@ const AddMedical = (props) => {
           <form>
             <div className="edit-patient">
               <button type="button" onClick={setViewHandler}>
-                View Medical Data
+                View Appointment Data
               </button>
             </div>
           </form>
@@ -127,33 +110,24 @@ const AddMedical = (props) => {
           <form>
             <div className="edit-medical">
               <button type="button" onClick={setFormHandler}>
-                Add Medical Data
+                Add Appointment Data
               </button>
             </div>
           </form>
         </Card>
         <Card>
           <form>
-            <h3>Medical History</h3>
+            <h3>Appointment History</h3>
             <li className="expenses-list">
-              {getMH.map((MH) => (
+              {getAppointment.map((Appointment) => (
                 <div className="expense-item__description">
-                  <p>{MH}</p>
-                </div>
-              ))}
-            </li>
-
-            <h3>Diagnosis</h3>
-            <li className="expenses-list">
-              {getDiagnosis.map((Diagnosis) => (
-                <div className="expense-item__description">
-                  <p>{Diagnosis}</p>
+                  <p>{Appointment}</p>
                 </div>
               ))}
             </li>
             <div className="edit-patient">
               <button type="button" onClick={resetViewHandler}>
-                Hide Medical Data
+                Hide Appointment Data
               </button>
             </div>
           </form>
@@ -168,8 +142,8 @@ const AddMedical = (props) => {
     return (
       <div>
         <Card className="edit-medical">
-          <DoctorForm
-            onAddMedicalData={AddMedicalHandler}
+          <AppointmentForm
+            onAddAppointmentData={AddAppointmentHandler}
             onCancelForm={resetFormHandler}
           />
         </Card>
@@ -177,7 +151,7 @@ const AddMedical = (props) => {
           <form>
             <div className="edit-patient">
               <button type="button" onClick={setViewHandler}>
-                View Medical Data
+                View Appointment Data
               </button>
             </div>
           </form>
@@ -191,33 +165,26 @@ const AddMedical = (props) => {
   return (
     <div>
       <Card className="edit-medical">
-        <DoctorForm
-          onAddMedicalData={AddMedicalHandler}
+        <AppointmentForm
+          onAddAppointmentData={AddAppointmentHandler}
           onCancelForm={resetFormHandler}
         />
       </Card>
       <Card>
         <form>
-          <h3>Medical History</h3>
+          <h3>Appointment History</h3>
           <li className="expenses-list">
-            {getMH.map((MH) => (
+            {getAppointment.map((Appointment) => (
               <div className="expense-item__description">
-                <p>{MH}</p>
+                <p>{Appointment}</p>
               </div>
             ))}
           </li>
 
-          <h3>Diagnosis</h3>
-          <li className="expenses-list">
-            {getDiagnosis.map((Diagnosis) => (
-              <div className="expense-item__description">
-                <p>{Diagnosis}</p>
-              </div>
-            ))}
-          </li>
+          
           <div className="edit-patient">
             <button type="button" onClick={resetViewHandler}>
-              Hide Medical Data
+              Hide Appointment Data
             </button>
           </div>
         </form>
@@ -229,4 +196,4 @@ const AddMedical = (props) => {
   );
 };
 
-export default AddMedical;
+export default AddAppointment;

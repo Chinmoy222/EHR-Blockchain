@@ -1,22 +1,24 @@
 
 import React from 'react';
 import { Navbar,Nav,NavDropdown } from 'react-bootstrap';
-
+import { BrowserRouter, Route } from "react-router-dom";
 function Navigation (){
-    return(
-        <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
+    return (
+      <Navbar collapseOnSelect expand="lg" bg="dark" variant="dark">
         <Navbar.Brand href="#home">Electronic Health Record</Navbar.Brand>
         <Navbar.Toggle aria-controls="responsive-navbar-nav" />
         <Navbar.Collapse id="responsive-navbar-nav">
           <Nav className="mr-auto">
             <Nav.Link href="#features">About</Nav.Link>
             <Nav.Link href="#pricing">Team Members</Nav.Link>
-            
           </Nav>
           <Nav>
-          <NavDropdown title="Sign Up As" id="collasible-nav-dropdown">
+            <Nav.Link href="/appointment">Appointments</Nav.Link>
+            <Nav.Link href="/patientEdit">Personal Details</Nav.Link>
+            <Nav.Link href="/doctorEdit">Medical Details</Nav.Link>
+            <NavDropdown title="Sign Up As" id="collasible-nav-dropdown">
               <NavDropdown.Item href="#action/3.1">Doctor</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">Patient</NavDropdown.Item>
+              <NavDropdown.Item>Patient</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
