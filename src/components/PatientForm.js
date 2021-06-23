@@ -108,7 +108,7 @@ const PatientForm = (props) => {
             <input
               type="tel"
               placeholder="10 Digit Phone Number"
-              pattern="[0-9]{4}-[0-9]{3}-[0-9]{3}"
+              pattern="[0-9]{10}"
               value={enteredPhone}
               onChange={PhoneChangeHandler}
             />

@@ -6,6 +6,7 @@ import EditPatient from "./components/EditPatient";
 import AddMedical from "./components/AddMedical";
 import ViewIPFS from "./components/ViewIPFS";
 import LoginPage from "./pages/sign-in/sign-in.component";
+import SignUpPage from "./pages/sign-up/sign-up.component";
 import Card from "./components/Card";
 import MRUpload from "./components/mr-upload.component";
 import PRUpload from "./components/pr-upload.component";
@@ -28,6 +29,15 @@ function App() {
         render={(props) => (
           <Fragment>
             <Navigation /> <LoginPage addressChanger={changeAddressHandler} />
+          </Fragment>
+        )}
+      />
+      <Route
+        exact
+        path="/signup"
+        render={(props) => (
+          <Fragment>
+            <Navigation /> <SignUpPage addressChanger={changeAddressHandler} />
           </Fragment>
         )}
       />
