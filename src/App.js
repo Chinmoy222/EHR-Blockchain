@@ -13,11 +13,18 @@ import PRUpload from "./components/pr-upload.component";
 import AddAppointment from './components/AddAppointment';
 function App() {
   // const address = "0x0F658b1A03be1B2Fb42Fda68B0D150CbB7709599";
-  const [addressValue, setAddressValue] = useState("");
+  const [addressValue, setAddressValue] = useState(window.sessionStorage.getItem("addressValue"));
   // setAddressValue(address);
-  const changeAddressHandler = (enteredAddress) => {
-    setAddressValue(enteredAddress);
-    console.log("App=>" + addressValue);
+  const changeAddressHandler = async (enteredAddress) => {
+    await setAddressValue(enteredAddress);
+    await window.sessionStorage.setItem("addressValue", addressValue);
+    console.log(
+      "App=>" +
+        addressValue +
+        " --- " +
+        await window.sessionStorage.getItem("addressValue")
+    );
+    
   };
   return (
     <BrowserRouter>

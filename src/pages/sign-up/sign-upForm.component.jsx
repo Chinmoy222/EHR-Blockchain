@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import "./sign-up.styles.css";
-import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import { Form, Button } from "react-bootstrap";
 const SignUpPage = (props) => {
-  const [address, setAddress] = useState("");
   // const [password, setPassword] = useState("");
   const [enteredName, setEnteredName] = useState("");
   const [enteredDOB, setEnteredDOB] = useState("");
