@@ -10,6 +10,7 @@ const AddMedical = (props) => {
   const [getMH, setGetMH] = useState([]);
   const [getDiagnosis, setGetDiagnosis] = useState([]);
   const [messageValue, setMessageValue] = useState("");
+  const [enteredDoctor, setEnteredDoctor] = useState("");
   const AddMedicalHandler = async (enteredMedicalData) => {
     const medicalData = {
       ...enteredMedicalData,
@@ -38,6 +39,26 @@ const AddMedical = (props) => {
     setMessageValue("Retrieval Success");
   };
 
+  const AddDoctorHandler = async (doctor) => {
+    setEnteredDoctor(doctor);
+  };
+
+  const submitDoctorHandler = async (event) => {
+    event.preventDefault();
+    const accounts = await web3.eth.getAccounts();
+    if (enteredDoctor){
+      await storehash.methods.addDoctorsAllowed(enteredDoctor).send({
+        from: accounts[0],
+      });
+      setMessageValue("Doctor address " + enteredDoctor + " added");
+    }
+    else{
+      setMessageValue("Doctor adding failed due to invalid input");
+    }
+    
+  };
+
+  
   const GetMedicalHandler = async () => {
     setMessageValue("Retrieving Data...");
     setGetMH([]);
@@ -117,6 +138,23 @@ const AddMedical = (props) => {
             <h3>{messageValue}</h3>
           </center>
         </Card>
+        <Card>
+          <form onSubmit={submitDoctorHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Doctor Address</label>
+                <input
+                  type="text"
+                  value={enteredDoctor}
+                  onChange={AddDoctorHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Doctor</button>
+            </div>
+          </form>
+        </Card>
       </div>
     );
   }
@@ -161,6 +199,23 @@ const AddMedical = (props) => {
             <h3>{messageValue}</h3>
           </center>
         </Card>
+        <Card>
+          <form onSubmit={submitDoctorHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Doctor Address</label>
+                <input
+                  type="text"
+                  value={enteredDoctor}
+                  onChange={AddDoctorHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Doctor</button>
+            </div>
+          </form>
+        </Card>
       </div>
     );
   }
@@ -184,6 +239,23 @@ const AddMedical = (props) => {
           <center>
             <h3>{messageValue}</h3>
           </center>
+        </Card>
+        <Card>
+          <form onSubmit={submitDoctorHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Doctor Address</label>
+                <input
+                  type="text"
+                  value={enteredDoctor}
+                  onChange={AddDoctorHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Doctor</button>
+            </div>
+          </form>
         </Card>
       </div>
     );
@@ -224,6 +296,19 @@ const AddMedical = (props) => {
         <center>
           <h3>{messageValue}</h3>
         </center>
+      </Card>
+      <Card>
+        <form onSubmit={submitDoctorHandler}>
+          <div className="edit-medical__controls">
+            <div className="edit-medical__control">
+              <label>Doctor Address</label>
+              <input type="text" value={enteredDoctor} onChange={AddDoctorHandler} />
+            </div>
+          </div>
+          <div className="edit-medical__actions">
+            <button type="submit">Add Allowed Doctor</button>
+          </div>
+        </form>
       </Card>
     </div>
   );

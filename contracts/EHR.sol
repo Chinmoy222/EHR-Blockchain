@@ -293,7 +293,6 @@ contract EHR {
     
     function setHashipfsHashPrescription(string  x) allowedDoctorsRestricted public {
         ipfsHashPrescription.push(x); 
-        
     }
     
     function getHashSizeipfsHashPrescription() allowedDoctorsRestricted public view returns (uint) {

@@ -16,9 +16,9 @@ function Navigation (){
             <Nav.Link href="/appointment">Appointments</Nav.Link>
             <Nav.Link href="/patientEdit">Personal Details</Nav.Link>
             <Nav.Link href="/doctorEdit">Medical Details</Nav.Link>
-            <NavDropdown title="Sign Up As" id="collasible-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Doctor</NavDropdown.Item>
-              <NavDropdown.Item>Patient</NavDropdown.Item>
+            <NavDropdown title="Registration" id="collasible-nav-dropdown">
+              <NavDropdown.Item href="/login">Contract Login</NavDropdown.Item>
+              <NavDropdown.Item href="/signup">Patient Sign Up</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>
