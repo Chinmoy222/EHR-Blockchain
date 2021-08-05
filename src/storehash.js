@@ -1,5 +1,5 @@
 import web3 from "./web3";
-const address = "0x0F658b1A03be1B2Fb42Fda68B0D150CbB7709599"; //Contract Address
+// const address = "0x0F658b1A03be1B2Fb42Fda68B0D150CbB7709599"; //Contract Address
 
 const abi = [
   {
@@ -167,24 +167,6 @@ const abi = [
     type: "function",
   },
   {
-    constant: false,
-    inputs: [
-      {
-        name: "doctor",
-        type: "string",
-      },
-      {
-        name: "date",
-        type: "string",
-      },
-    ],
-    name: "cancelAppointment",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
-    type: "function",
-  },
-  {
     constant: true,
     inputs: [],
     name: "getMedicalHistoryLen",
@@ -210,24 +192,6 @@ const abi = [
     ],
     payable: false,
     stateMutability: "view",
-    type: "function",
-  },
-  {
-    constant: false,
-    inputs: [
-      {
-        name: "doctor",
-        type: "string",
-      },
-      {
-        name: "date",
-        type: "string",
-      },
-    ],
-    name: "confirmAppointmentReached",
-    outputs: [],
-    payable: false,
-    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -261,6 +225,20 @@ const abi = [
     ],
     payable: false,
     stateMutability: "view",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "hospital",
+        type: "address",
+      },
+    ],
+    name: "addHospitalsAllowed",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
     type: "function",
   },
   {
@@ -339,6 +317,28 @@ const abi = [
     type: "function",
   },
   {
+    constant: false,
+    inputs: [
+      {
+        name: "doctor",
+        type: "string",
+      },
+      {
+        name: "hospital",
+        type: "string",
+      },
+      {
+        name: "date",
+        type: "string",
+      },
+    ],
+    name: "confirmAppointmentReached",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
     constant: true,
     inputs: [
       {
@@ -375,14 +375,41 @@ const abi = [
     constant: false,
     inputs: [
       {
-        name: "index",
-        type: "uint256",
+        name: "doctor",
+        type: "string",
+      },
+      {
+        name: "hospital",
+        type: "string",
+      },
+      {
+        name: "date",
+        type: "string",
       },
     ],
-    name: "removeAppointmentsAtIndex",
+    name: "cancelAppointment",
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: true,
+    inputs: [
+      {
+        name: "",
+        type: "uint256",
+      },
+    ],
+    name: "hospitals",
+    outputs: [
+      {
+        name: "",
+        type: "address",
+      },
+    ],
+    payable: false,
+    stateMutability: "view",
     type: "function",
   },
   {
@@ -468,15 +495,25 @@ const abi = [
     constant: false,
     inputs: [
       {
-        name: "doctor",
-        type: "string",
-      },
-      {
-        name: "date",
+        name: "hospital",
         type: "string",
       },
     ],
-    name: "createAppointment",
+    name: "removeHospital",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "doctor",
+        type: "string",
+      },
+    ],
+    name: "removeDoctor",
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",
@@ -519,6 +556,28 @@ const abi = [
       },
     ],
     name: "addDoctorsAllowed",
+    outputs: [],
+    payable: false,
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    constant: false,
+    inputs: [
+      {
+        name: "doctor",
+        type: "string",
+      },
+      {
+        name: "hospital",
+        type: "string",
+      },
+      {
+        name: "date",
+        type: "string",
+      },
+    ],
+    name: "createAppointment",
     outputs: [],
     payable: false,
     stateMutability: "nonpayable",

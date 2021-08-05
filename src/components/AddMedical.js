@@ -11,6 +11,7 @@ const AddMedical = (props) => {
   const [getDiagnosis, setGetDiagnosis] = useState([]);
   const [messageValue, setMessageValue] = useState("");
   const [enteredDoctor, setEnteredDoctor] = useState("");
+  const [enteredHospital, setEnteredHospital] = useState("");
   const AddMedicalHandler = async (enteredMedicalData) => {
     const medicalData = {
       ...enteredMedicalData,
@@ -57,7 +58,21 @@ const AddMedical = (props) => {
     }
     
   };
-
+const AddHospitalHandler = async (hospital) => {
+  setEnteredHospital(hospital);
+};
+  const submitHospitalHandler = async (event) => {
+    event.preventDefault();
+    const accounts = await web3.eth.getAccounts();
+    if (enteredHospital) {
+      await storehash.methods.addHospitalsAllowed(enteredHospital).send({
+        from: accounts[0],
+      });
+      setMessageValue("Hospital address " + enteredHospital + " added");
+    } else {
+      setMessageValue("Hospital adding failed due to invalid input");
+    }
+  };
   
   const GetMedicalHandler = async () => {
     setMessageValue("Retrieving Data...");
@@ -155,6 +170,23 @@ const AddMedical = (props) => {
             </div>
           </form>
         </Card>
+        <Card>
+          <form onSubmit={submitHospitalHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Hospital Address</label>
+                <input
+                  type="text"
+                  value={enteredHospital}
+                  onChange={AddHospitalHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Hospital</button>
+            </div>
+          </form>
+        </Card>
       </div>
     );
   }
@@ -216,6 +248,23 @@ const AddMedical = (props) => {
             </div>
           </form>
         </Card>
+        <Card>
+          <form onSubmit={submitHospitalHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Hospital Address</label>
+                <input
+                  type="text"
+                  value={enteredHospital}
+                  onChange={AddHospitalHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Hospital</button>
+            </div>
+          </form>
+        </Card>
       </div>
     );
   }
@@ -254,6 +303,23 @@ const AddMedical = (props) => {
             </div>
             <div className="edit-medical__actions">
               <button type="submit">Add Allowed Doctor</button>
+            </div>
+          </form>
+        </Card>
+        <Card>
+          <form onSubmit={submitHospitalHandler}>
+            <div className="edit-medical__controls">
+              <div className="edit-medical__control">
+                <label>Hospital Address</label>
+                <input
+                  type="text"
+                  value={enteredHospital}
+                  onChange={AddHospitalHandler}
+                />
+              </div>
+            </div>
+            <div className="edit-medical__actions">
+              <button type="submit">Add Allowed Hospital</button>
             </div>
           </form>
         </Card>
@@ -302,11 +368,32 @@ const AddMedical = (props) => {
           <div className="edit-medical__controls">
             <div className="edit-medical__control">
               <label>Doctor Address</label>
-              <input type="text" value={enteredDoctor} onChange={AddDoctorHandler} />
+              <input
+                type="text"
+                value={enteredDoctor}
+                onChange={AddDoctorHandler}
+              />
             </div>
           </div>
           <div className="edit-medical__actions">
             <button type="submit">Add Allowed Doctor</button>
+          </div>
+        </form>
+      </Card>
+      <Card>
+        <form onSubmit={submitHospitalHandler}>
+          <div className="edit-medical__controls">
+            <div className="edit-medical__control">
+              <label>Hospital Address</label>
+              <input
+                type="text"
+                value={enteredHospital}
+                onChange={AddHospitalHandler}
+              />
+            </div>
+          </div>
+          <div className="edit-medical__actions">
+            <button type="submit">Add Allowed Hospital</button>
           </div>
         </form>
       </Card>

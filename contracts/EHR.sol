@@ -3,6 +3,7 @@ pragma solidity ^0.4.17;
 contract EHR {
     address public owner;
     address[] public allowedDoctors;
+    address[] public hospitals;
     string[] private medicalHistory;
     string[] private diagnosis;
 
@@ -48,16 +49,16 @@ contract EHR {
         return dob;
     }
     
-    function getEmail() ownerRestricted public view returns(string memory){
+    function getEmail() allowedDoctorsRestricted public view returns(string memory){
         return email;
     }
     
-    function getPhone() ownerRestricted public view returns(string memory){
+    function getPhone() allowedDoctorsRestricted public view returns(string memory){
         return phone;
     }
     
     
-    function getResAddress() ownerRestricted public view returns(string memory){
+    function getResAddress() allowedDoctorsRestricted public view returns(string memory){
         return resAddress;
     }
     
@@ -140,6 +141,13 @@ contract EHR {
                 }
             }
         }
+        if(hospitals.length > 0){
+            for(uint j = 0; j < hospitals.length; j++){
+                if(hospitals[j] == msg.sender){
+                    return(true);
+                }
+            }
+        }
         return (msg.sender == owner);
     }
     
@@ -151,15 +159,26 @@ contract EHR {
                 }
             }
         }
+        if(hospitals.length > 0){
+            for(uint j = 0; j < hospitals.length; j++){
+                if(hospitals[j] == msg.sender){
+                    return(true);
+                }
+            }
+        }
         return (false);
     }
     
     
     //Medical Data
-    function addDoctorsAllowed(address doctor) public {
+    function addDoctorsAllowed(address doctor) ownerRestricted public {
         allowedDoctors.push(doctor);
     }
     
+    function addHospitalsAllowed(address hospital) ownerRestricted public {
+        hospitals.push(hospital);
+    }
+
     function addMedicalHistory(string memory _data) allowedMedDetailsChanges public{
         medicalHistory.push(_data);
     }
@@ -191,7 +210,7 @@ contract EHR {
     }
     
     
-    function concat(string _a, string _b) public constant returns (string){
+    function concat(string _a, string _b) public pure returns (string){
     bytes memory bytes_a = bytes(_a);
     bytes memory bytes_b = bytes(_b);
     string memory length_ab = new string(bytes_a.length + bytes_b.length);
@@ -202,64 +221,46 @@ contract EHR {
     return string(bytes_c);
     }
     
-    
-    
-//     function ToString(bytes32 x) public constant returns (string) {
-//     bytes memory bytesString = new bytes(32);
-//     uint charCount = 0;
-//     for (uint j = 0; j < 32; j++) {
-//       byte char = byte(bytes32(uint(x) * 2 ** (8 * j)));
-//       if (char != 0) {
-//         bytesString[charCount] = char;
-//         charCount++;
-//       }
-//     }
-//     bytes memory bytesStringTrimmed = new bytes(charCount);
-//     for (j = 0; j < charCount; j++) {
-//       bytesStringTrimmed[j] = bytesString[j];
-//     }
-//     return string(bytesStringTrimmed);
-//   }
-    
     // Alternate functions 
-    function createAppointment(string memory doctor, string memory date) ownerRestricted public {
-     //   addDoctorsAllowed(toAddress(doctor)); //#TODO
-        appointments.push(concat(concat(doctor, ' '), date));
-        
+    function createAppointment(string memory doctor, 
+    string memory hospital, string memory date) ownerRestricted public {
+        appointments.push(concat(concat(doctor, concat(' ', hospital)), date));
     }
-    
-    function removeAppointmentsAtIndex(uint index) public {
-    if (index >= appointments.length) return;
+  
+  
+    function cancelAppointment(string memory doctor, string memory hospital, string memory date) allowedDoctorsRestricted public {
+        string memory appointment = string(concat(concat(doctor, concat(' ', hospital)), date));
+        for(uint i = 0; i < appointments.length; i++){
+            if(keccak256(appointments[i]) == keccak256(appointment)){
+                uint loc = i;
+                 break;
+            }
+        }
+        if (loc >= appointments.length) return;
 
-    for (uint i = index; i < appointments.length-1; i++) {
-      appointments[i] = appointments[i+1];
+        for (i = loc; i < appointments.length-1; i++) {
+          appointments[i] = appointments[i+1];
+        }
+        appointments.length--;
     }
-    appointments.length--;
-  }
-  
-  
-    function cancelAppointment(string memory doctor, string memory date) allowedDoctorsRestricted public {
-        string memory appointment = string(concat(concat(doctor, ' '), date));
+    
+    
+    function confirmAppointmentReached(string memory doctor, string memory hospital, string memory date) allowedDoctorsRestricted public {
+        
+        string memory appointment = string(concat(concat(doctor, concat(' ', hospital)), date));
         for(uint i = 0; i < appointments.length; i++){
             if(keccak256(appointments[i]) == keccak256(appointment)){
                 uint loc = i;
                  break;
             }
         }
-        removeAppointmentsAtIndex(loc);
-    }
-    
-    
-    function confirmAppointmentReached(string memory doctor, string memory date) allowedDoctorsRestricted public {
-        appointments.push(concat(concat(doctor, ' '), date));
-        string memory appointment = string(concat(concat(doctor, ' '), date));
-        for(uint i = 0; i < appointments.length; i++){
-            if(keccak256(appointments[i]) == keccak256(appointment)){
-                uint loc = i;
-                 break;
-            }
+        if (loc >= appointments.length) return;
+
+        for (i = loc; i < appointments.length-1; i++) {
+          appointments[i] = appointments[i+1];
         }
-        removeAppointmentsAtIndex(loc);
+        appointments.length--;
+        visits.push(appointment);
     }
     
     function getAppointmentLen() public view allowedDoctorsRestricted returns(uint){
@@ -276,7 +277,7 @@ contract EHR {
     
     string[] private ipfsHashMedicalReports;
     
-    function setHashMedicalReports(string  x) allowedDoctorsRestricted public {
+    function setHashMedicalReports(string  x) allowedMedDetailsChanges public {
         ipfsHashMedicalReports.push(x); 
         
     }
@@ -291,17 +292,47 @@ contract EHR {
     
     string[] private ipfsHashPrescription;
     
-    function setHashipfsHashPrescription(string  x) allowedDoctorsRestricted public {
+    function setHashipfsHashPrescription(string  x) allowedMedDetailsChanges public {
         ipfsHashPrescription.push(x); 
+        
     }
     
-    function getHashSizeipfsHashPrescription() allowedDoctorsRestricted public view returns (uint) {
+    function getHashSizeipfsHashPrescription() allowedDoctorsRestricted public view returns (uint){
         return ipfsHashPrescription.length; 
     }
     
     function getHashipfsHashPrescription(uint index) allowedDoctorsRestricted public view returns (string memory) {
         return ipfsHashPrescription[index]; 
     }
-    
-    
+  
+  
+    function removeDoctor(string memory doctor) ownerRestricted public {
+        for(uint i = 0; i < appointments.length; i++){
+            if(keccak256(allowedDoctors[i]) == keccak256(doctor)){
+                uint loc = i;
+                 break;
+            }
+        }
+        if (loc >= allowedDoctors.length) return;
+
+        for (i = loc; i < allowedDoctors.length-1; i++) {
+          allowedDoctors[i] = allowedDoctors[i+1];
+        }
+        allowedDoctors.length--;
+    }
+
+    function removeHospital(string memory hospital) ownerRestricted public {
+        for(uint i = 0; i < hospitals.length; i++){
+            if(keccak256(hospitals[i]) == keccak256(hospital)){
+                uint loc = i;
+                 break;
+            }
+        }
+        if (loc >= hospitals.length) return;
+
+        for (i = loc; i < hospitals.length-1; i++) {
+          hospitals[i] = hospitals[i+1];
+        }
+        hospitals.length--;
+    }
 }
