@@ -40,8 +40,8 @@ const AddMedical = (props) => {
     setMessageValue("Retrieval Success");
   };
 
-  const AddDoctorHandler = async (doctor) => {
-    setEnteredDoctor(doctor);
+  const AddDoctorHandler = async (event) => {
+    setEnteredDoctor(event.target.value);
   };
 
   const submitDoctorHandler = async (event) => {
@@ -58,8 +58,8 @@ const AddMedical = (props) => {
     }
     
   };
-const AddHospitalHandler = async (hospital) => {
-  setEnteredHospital(hospital);
+const AddHospitalHandler = async (event) => {
+  setEnteredHospital(event.target.value);
 };
   const submitHospitalHandler = async (event) => {
     event.preventDefault();
